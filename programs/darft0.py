@@ -6,6 +6,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 from selenium.webdriver import Chrome, ChromeOptions
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.chrome.options import Options
 
 drPath='C:/Users/abomb/Projects/covDatDownloader/chromedriver.exe'
 gisaidUser='../gisaidLogin.txt'
@@ -21,6 +22,10 @@ login=getInfo(gisaidUser)
 password=getInfo(gisaidPassword)
 
 
+options = Options()
+options.add_argument("--disable-notifications")
+
+
 
 driver=webdriver.Chrome(drPath)
 driver.get(gisaidPath)
@@ -30,3 +35,7 @@ driver.find_element_by_id('epassword').send_keys(password)
 
 driver.find_elements_by_class_name('form_button_submit')[0].click()
 
+time.sleep(20) # sleep to deal with pop up manually
+
+driver.find_element_by_xpath('//*[@id="c_rd439f_1az-c_rd439f_1az"]/div/div[3]')\
+    .click() # clcik on the search option
