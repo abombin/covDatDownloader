@@ -5,24 +5,28 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 from selenium.webdriver import Chrome, ChromeOptions
+from selenium.webdriver.common.action_chains import ActionChains
 
 drPath='C:/Users/abomb/Projects/covDatDownloader/chromedriver.exe'
 gisaidUser='../gisaidLogin.txt'
 gisaidPassword='../gisadPassword.txt'
 gisaidPath='https://www.epicov.org/epi3/frontend#45e4b1'
 
-def getUser(user):
-    with open(user) as f:
+def getInfo(file):
+    with open(file) as f:
         text = f.read()
     return text
 
-def getPassword(password):
-    with open(password) as f:
-        text=f.read()
-    return(text)
+login=getInfo(gisaidUser)
+password=getInfo(gisaidPassword)
+
+
 
 driver=webdriver.Chrome(drPath)
-page=driver.get(gisaidPath)
+driver.get(gisaidPath)
 
+driver.find_element_by_id('elogin').send_keys(login)
+driver.find_element_by_id('epassword').send_keys(password)
 
+driver.find_elements_by_class_name('form_button_submit')[0].click()
 
