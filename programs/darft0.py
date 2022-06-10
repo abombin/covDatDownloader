@@ -35,7 +35,20 @@ driver.find_element_by_id('epassword').send_keys(password)
 
 driver.find_elements_by_class_name('form_button_submit')[0].click()
 
-time.sleep(20) # sleep to deal with pop up manually
+time.sleep(10) # sleep to deal with pop up manually
+
+def clearPopUp():
+    try:
+        alert=driver.switch_to.alert()
+        alert.acept()
+    except:
+        pass
+    
+        
+
+
+
+#driver.switch_to.alert.dismiss()
 
 driver.find_element_by_xpath('//*[@id="c_rd439f_1az-c_rd439f_1az"]/div/div[3]')\
     .click() # clcik on the search option
