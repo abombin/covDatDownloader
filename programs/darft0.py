@@ -43,12 +43,42 @@ def clearPopUp():
         alert.acept()
     except:
         pass
-    
-        
+    try:
+        driver.find_element_by_xpath('//*[@id="ce_rd8pkw_rw"]/div/button').click()
+    except:
+        pass
+    try:
+        driver.find_elements_by_class_name('sys-form-button')[0].click()
+    except:
+        pass
+    try:
+        driver.find_elements_by_class_name('sys-form-button')[1].click()
+    except:
+        pass
+    try:
+        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div[2]/div/div/div/button').click()
+    except:
+        pass
 
+# need to try to switch to window
 
+#clearPopUp()     
 
-#driver.switch_to.alert.dismiss()
+#time.sleep(10)
 
-driver.find_element_by_xpath('//*[@id="c_rd439f_1az-c_rd439f_1az"]/div/div[3]')\
+# continue to the search page
+
+driver.find_element_by_xpath('//*[@id="c_rd8pkw_1c5-c_rd8pkw_1c5"]/div/div[3]')\
     .click() # clcik on the search option
+
+time.sleep(10)
+
+def sortSubmuit():
+	print("Sorting by submission date...")
+	submission_date = driver.find_element_by_xpath("//a[@class='yui-dt-sortable'][text()='Submission Date']")
+	submission_date.click()
+	time.sleep(10)
+	submission_date = driver.find_element_by_xpath("//a[@class='yui-dt-sortable'][text()='Submission Date']")
+	submission_date.click()
+
+sortSubmuit()
