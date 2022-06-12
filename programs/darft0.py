@@ -81,4 +81,23 @@ def sortSubmuit():
 	submission_date = driver.find_element_by_xpath("//a[@class='yui-dt-sortable'][text()='Submission Date']")
 	submission_date.click()
 
-sortSubmuit()
+def filterNme():
+    try:
+        driver.find_element_by_id('ce_rd8pkw_s2_entry').send_keys('hCoV-19/USA/GA-EHC')
+    except:
+        pass
+
+
+#sortSubmuit()
+
+filterNme()
+
+time.sleep(8)
+
+def checkBox():
+    try:
+        driver.find_elements_by_class_name('yui-dt-checkbox')[2].click()
+    except:
+        pass
+
+checkBox()
