@@ -71,7 +71,7 @@ def clearPopUp():
 driver.find_element_by_xpath('//*[@id="c_rd8pkw_1c5-c_rd8pkw_1c5"]/div/div[3]')\
     .click() # clcik on the search option
 
-time.sleep(10)
+time.sleep(5)
 
 def sortSubmuit():
 	print("Sorting by submission date...")
@@ -90,14 +90,37 @@ def filterNme():
 
 #sortSubmuit()
 
-filterNme()
+#filterNme()
 
-time.sleep(8)
+#time.sleep(8)
 
 def checkBox():
     try:
-        driver.find_elements_by_class_name('yui-dt-checkbox')[2].click()
+        elements=driver.find_elements_by_class_name('yui-dt-checkbox')
+        for i in elements:
+            i.click()
     except:
         pass
 
 checkBox()
+
+time.sleep(5)
+
+def download():
+    driver.find_element_by_xpath('//*[@id="c_rd8pkw_1cj_btns"]/div[3]/button[4]').click()
+    time.sleep(5)
+    driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
+    driver.find_element_by_xpath('//*[@id="ce_rd8pkw_13p_2"]').click()
+    time.sleep(2)
+    driver.find_element_by_xpath('//*[@id="ce_rd8pkw_13v"]/div/button').click()
+
+download()
+
+#driver.find_element_by_xpath('//*[@id="c_rd8pkw_1cj_btns"]/div[3]/button[4]').click()
+
+#time.sleep(5)
+
+#driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
+#time.sleep(3)
+
+#driver.find_element_by_xpath('//*[@id="ce_rd8pkw_13p_2"]').click()
