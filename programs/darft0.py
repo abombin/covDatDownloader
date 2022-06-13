@@ -62,17 +62,20 @@ def clearPopUp():
         #pass
 
 def clearWindow():
-    driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
-    driver.find_element_by_xpath('//*[@id="ce_rd8pkw_rw"]/div/button').click()
-    driver.switch_to.default_content()
+    try:
+        driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
+        driver.find_element_by_xpath('//*[@id="ce_rd8pkw_rw"]/div/button').click()
+        driver.switch_to.default_content()
+    except:
+        pass
 
 clearWindow()
 
-time.sleep(5)
+time.sleep(3)
 
 # continue to the search page
 
-driver.find_element_by_xpath('//*[@id="c_rd8pkw_1c5-c_rd8pkw_1c5"]/div/div[3]')\
+driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[1]/div/div/div[3]')\
     .click() # clcik on the search option
 
 time.sleep(5)
@@ -105,29 +108,32 @@ def checkBox():
             i.click()
     except:
         pass
+    time.sleep(5)
 
 checkBox()
 
 time.sleep(5)
 
 def download():
-    driver.find_element_by_xpath('//*[@id="c_rd8pkw_1cj_btns"]/div[3]/button[4]').click()
+    driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[2]/div[3]/button[4]').click()
     time.sleep(5)
     driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
-    driver.find_element_by_xpath('//*[@id="ce_rd8pkw_13p_2"]').click()
+    driver.find_element_by_xpath('/html/body/form/div[5]/div/div[1]/div/div/table[1]/tbody/tr/td[2]/div/div[1]/div[2]/div[2]/input').click()
     time.sleep(2)
-    driver.find_element_by_xpath('//*[@id="ce_rd8pkw_13v"]/div/button').click()
+    driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div/div[2]/div/button').click()
     time.sleep(30)
     driver.switch_to.default_content()
+    time.sleep(3)
+    checkBox()
 
-#download()
+download()
 
 
 #driver.find_element_by_xpath('//*[@id="yui-pg0-0-next-link70"]').click()
 
-driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[2]/div[2]/div/a[1]').click()
+#driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[2]/div[2]/div/a[1]').click()
 
-clearPopUp()
+#clearPopUp()
 
 time.sleep(5)
 
@@ -150,4 +156,17 @@ def switchPage(i): # does not work as intended, checkAndJump() works
     for _ in range(i):
         checkAndJump()
 
-checkAndJump()
+def nextPageDownload(): # still does not check all the second page
+    driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[2]/div[2]/div/a[1]').click()
+    clearPopUp()
+    checkBox()
+    download()
+
+driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[2]/div[2]/div/a[1]').click()
+time.sleep(5)
+clearPopUp()
+time.sleep(3)
+checkBox()
+download()
+
+
