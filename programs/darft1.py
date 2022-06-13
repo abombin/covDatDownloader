@@ -1,0 +1,1 @@
+# make program that will select 1 day for each state and download sequences

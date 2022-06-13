@@ -1,6 +1,7 @@
 from nturl2path import url2pathname
 from os import path
 from pydoc import pathdirs
+from tabnanny import check
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
@@ -47,24 +48,27 @@ def clearPopUp():
         driver.find_element_by_xpath('//*[@id="ce_rd8pkw_rw"]/div/button').click()
     except:
         pass
-    try:
-        driver.find_elements_by_class_name('sys-form-button')[0].click()
-    except:
-        pass
-    try:
-        driver.find_elements_by_class_name('sys-form-button')[1].click()
-    except:
-        pass
-    try:
-        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div[2]/div/div/div/button').click()
-    except:
-        pass
+    #try:
+        #driver.find_elements_by_class_name('sys-form-button')[0].click()
+    #except:
+        #pass
+    #try:
+        #driver.find_elements_by_class_name('sys-form-button')[1].click()
+    #except:
+        #pass
+    #try:
+        #driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div[2]/div/div/div/button').click()
+    #except:
+        #pass
 
-# need to try to switch to window
+def clearWindow():
+    driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
+    driver.find_element_by_xpath('//*[@id="ce_rd8pkw_rw"]/div/button').click()
+    driver.switch_to.default_content()
 
-#clearPopUp()     
+clearWindow()
 
-#time.sleep(10)
+time.sleep(5)
 
 # continue to the search page
 
@@ -113,14 +117,37 @@ def download():
     driver.find_element_by_xpath('//*[@id="ce_rd8pkw_13p_2"]').click()
     time.sleep(2)
     driver.find_element_by_xpath('//*[@id="ce_rd8pkw_13v"]/div/button').click()
+    time.sleep(30)
+    driver.switch_to.default_content()
 
-download()
+#download()
 
-#driver.find_element_by_xpath('//*[@id="c_rd8pkw_1cj_btns"]/div[3]/button[4]').click()
 
-#time.sleep(5)
+#driver.find_element_by_xpath('//*[@id="yui-pg0-0-next-link70"]').click()
 
-#driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
-#time.sleep(3)
+driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[2]/div[2]/div/a[1]').click()
 
-#driver.find_element_by_xpath('//*[@id="ce_rd8pkw_13p_2"]').click()
+clearPopUp()
+
+time.sleep(5)
+
+def checkAndJump():
+    try:
+        elements=driver.find_elements_by_class_name('yui-dt-checkbox')
+        for i in elements:
+            i.click()
+    except:
+        pass
+    time.sleep(10)
+    try:
+        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[2]/div[2]/div/a[1]').click()
+    except:
+        pass
+    clearPopUp()
+
+
+def switchPage(i): # does not work as intended, checkAndJump() works
+    for _ in range(i):
+        checkAndJump()
+
+checkAndJump()
