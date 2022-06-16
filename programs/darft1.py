@@ -69,7 +69,8 @@ sampName='hCoV-19/USA/GA-EHC'
 
 def filterName(sampName):
     try:
-        driver.find_element_by_id('ce_rdf3cu_rv_entry').send_keys(sampName)
+        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[2]/td[2]/div[3]/div/div[1]/input').\
+            send_keys(sampName)
     except:
         pass
     time.sleep(10)
@@ -79,7 +80,8 @@ location='North America / USA / Georgia'
 
 def filterLocation(location):
     try:
-        driver.find_element_by_id('ce_rdf3cu_rx_entry').send_keys(location)
+        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[3]/td[2]/div/div/div/div[1]/input').\
+            send_keys(location)
     except:
         pass
     time.sleep(10)
@@ -87,15 +89,32 @@ def filterLocation(location):
 #day= '2022-06-14'
 def filterDate(day):
     try:
-       driver.find_element_by_id('ce_rdf3cu_s1_input').send_keys(day) 
+       startDay=driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[4]/td[2]/div[5]/div/div[1]/input')
+       startDay.send_keys(day) 
     except:
         pass
     time.sleep(5)
     try:
-        driver.find_element_by_id('ce_rdf3cu_s2_input').send_keys(day)
+        endDay=driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[4]/td[2]/div[7]/div/div[1]/input')
+        endDay.send_keys(day)
     except:
         pass
     time.sleep(5)
+
+def clearDate():
+    try:
+       startDay=driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[4]/td[2]/div[5]/div/div[1]/input')
+       startDay.clear()
+    except:
+        pass
+    time.sleep(5)
+    try:
+        endDay=driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[4]/td[2]/div[7]/div/div[1]/input')
+        endDay.clear()
+    except:
+        pass
+    time.sleep(5)
+
 
 
 def download():
@@ -109,10 +128,16 @@ def download():
         .click()
     time.sleep(10)
 
+def samplesNum():
+    sampNumb=''
+    for elem in driver.find_elements_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[2]/div[1]/span/span'):
+        sampNumb+=elem.text
+    return(sampNumb)
+
 # run functions
-#logIn(login, password)
-#epiSearch()
-#filterName(sampName)
+logIn(login, password)
+epiSearch()
+filterName(sampName)
 #filterLocation(location)
 #filterDate(day)
 #download()
@@ -122,9 +147,14 @@ def runDays():
     logIn(login, password)
     epiSearch()
     filterName(sampName)
-    for i in days:
-        day=i
+    filterLocation(location)
+    for day in days:
         filterDate(day)
         download()
+        clearDate()
+
+#runDays()
+
+print(samplesNum())
 
 
