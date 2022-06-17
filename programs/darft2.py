@@ -7,8 +7,11 @@ def getSampNumb(sampNumb):
     part3=part2.replace(',', '')
     return(part3)
 
-if int(getSampNumb(sampNumb))>0:
-    print('download')
-    print(getSampNumb(sampNumb))
-else:
-    print('next')
+def checkSumpNumb():
+    if int(getSampNumb(sampNumb))>0:
+        print('download')
+        print(getSampNumb(sampNumb))
+    else:
+        print('next')
+
+checkSumpNumb()

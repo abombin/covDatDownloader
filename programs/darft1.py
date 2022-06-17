@@ -123,6 +123,19 @@ def download():
             .click()
     except:
         pass
+    time.sleep(8)
+    try:
+        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[2]/div[3]/button[4]').click()
+        time.sleep(5)
+        driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
+        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[1]/div/div/table[1]/tbody/tr/td[2]/div/div[1]/div[2]/div[2]/input').click()
+        time.sleep(2)
+        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div/div[2]/div/button').click()
+        time.sleep(30)
+        driver.switch_to.default_content()
+        time.sleep(2)
+    except:
+        pass
     time.sleep(15)
     driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[1]/div[2]/table/thead/tr/th[1]/div/span/input')\
         .click()
@@ -135,13 +148,13 @@ def samplesNum():
     return(sampNumb)
 
 # run functions
-logIn(login, password)
-epiSearch()
-filterName(sampName)
+#logIn(login, password)
+#epiSearch()
+#filterName(sampName)
 #filterLocation(location)
 #filterDate(day)
 #download()
-days= ['2022-06-14', '2022-06-15']
+days= ['2021-01-19', '2022-06-14']
 
 def runDays():
     logIn(login, password)
@@ -153,8 +166,8 @@ def runDays():
         download()
         clearDate()
 
-#runDays()
+runDays()
 
-print(samplesNum())
+
 
 
