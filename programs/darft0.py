@@ -141,7 +141,7 @@ def checkAndJump():
     try:
         elements=driver.find_elements_by_class_name('yui-dt-checkbox')
         for i in elements:
-            i.click()
+            i.clear()
     except:
         pass
     time.sleep(10)
@@ -168,6 +168,7 @@ clearPopUp()
 time.sleep(3)
 checkBox()
 download()
+checkAndJump()
 
 
-72 +684
+

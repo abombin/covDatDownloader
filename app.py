@@ -177,20 +177,32 @@ location='North America / USA / Georgia'
 date_rng = pd.date_range('2022-06-13','2022-06-16',freq='D')
 dates=pd.Series(date_rng.format()).tolist()
 
-# run functions
+# loop the functions functions
 def runDays():
     logIn(login, password)
     epiSearch()
     filterName(sampName)
     filterLocation(location)
     for day in dates:
-        filterDate(day)
-        sampNumb=samplesNum()
-        if int(getSampNumb(sampNumb))>0:
-            download()
-        else:
-            print('No samples to download')
-        clearDate()
+        try:
+            filterDate(day)
+            sampNumb=samplesNum()
+            if int(getSampNumb(sampNumb))>0:
+                download()
+            # write downloaded date into log
+                with open("completedLog.txt", "a") as text_file:
+                    text_file.write("%s Completed" % day + "\n")
+            else:
+                print('No samples to download')
+                with open("noSamplesLog.txt", "a") as text_file:
+                    text_file.write("%s No_samples" % day + "\n")
+            clearDate()
+        except:
+            with open("errorLog.txt", "a") as text_file:
+                    text_file.write("%s Failed" % day + "\n")
+        finally:
+            pass
 
-
-runDays()
+# run the program
+if __name__ == '__main__':
+    runDays()
