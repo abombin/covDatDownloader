@@ -4,6 +4,7 @@ from os import path
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
+import pandas as pd
 
 drPath='C:/Users/abomb/Projects/covDatDownloader/chromedriver.exe'
 gisaidUser='../gisaidLogin.txt'
@@ -168,7 +169,9 @@ login=getInfo(gisaidUser)
 password=getInfo(gisaidPassword)
 sampName='hCoV-19/USA/GA-EHC'
 location='North America / USA / Georgia'
-days= ['2021-01-19', '2022-06-14']
+# input the range of dates
+date_rng = pd.date_range('2021-01-01','2021-01-03',freq='D')
+dates=pd.Series(date_rng.format()).tolist()
 
 # run functions
 def runDays():
@@ -176,7 +179,7 @@ def runDays():
     epiSearch()
     filterName(sampName)
     filterLocation(location)
-    for day in days:
+    for day in dates:
         filterDate(day)
         download()
         clearDate()

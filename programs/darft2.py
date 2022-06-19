@@ -14,4 +14,8 @@ def checkSumpNumb():
     else:
         print('next')
 
-checkSumpNumb()
+
+import pandas as pd
+date_rng = pd.date_range('2021-01-01','2021-01-03',freq='D')
+dates=pd.Series(date_rng.format()).tolist()
+print(dates)
