@@ -1,0 +1,7 @@
+-- spleat download function in several functions
+-- remove try from internal functions
+-- use try in the main function
+
+
+# To consider:
+-- if we download fasta and metadata separately then we can download 10k samples

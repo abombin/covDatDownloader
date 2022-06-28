@@ -19,12 +19,13 @@ def getInfo(file):
 driver=webdriver.Chrome(drPath)
 driver.get(gisaidPath)
 
+time.sleep(5)
 # log in to the website
 def logIn(login, password):
     driver.find_element_by_id('elogin').send_keys(login)
     driver.find_element_by_id('epassword').send_keys(password)
     driver.find_elements_by_class_name('form_button_submit')[0].click()
-    time.sleep(5)
+    time.sleep(8)
     print('Logged in')
 
 # clear simple pop ups
@@ -51,109 +52,79 @@ def clearWindow():
 # get to covid search option
 def epiSearch():
     # Epicov
-    try:
-        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[1]/div/div/div/div/div[2]/div/ul/li[3]/a')\
-            .click()
-    except:
-        pass
-    time.sleep(3)
+    driver.find_element_by_xpath('/html/body/form/div[5]/div/div[1]/div/div/div/div/div[2]/div/ul/li[3]/a')\
+        .click()
+    time.sleep(6)
     # Search
-    try:
-        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[1]/div/div/div[3]')\
-            .click() # clcik on the search option
-    except:
-        pass
+    driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[1]/div/div/div[3]')\
+        .click() # clcik on the search option
     time.sleep(5)
     print('Went EpiSearch')
 
 # Filter samples by name
 def filterName(sampName):
+    time.sleep(2)
     # virus name
-    try:
-        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[2]/td[2]/div[3]/div/div[1]/input').\
-            send_keys(sampName)
-    except:
-        pass
-    time.sleep(10)
+    driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[2]/td[2]/div[3]/div/div[1]/input').\
+        send_keys(sampName)
+    time.sleep(8)
     print('Filtered by Name')
 
-# filter b location
+# filter by location
 def filterLocation(location):
-    try:
-        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[3]/td[2]/div/div/div/div[1]/input').\
-            send_keys(location)
-    except:
-        pass
-    time.sleep(10)
+    driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[3]/td[2]/div/div/div/div[1]/input').\
+        send_keys(location)
+    time.sleep(8)
 
 # filter by submuission date
 def filterDate(day):
+    time.sleep(2)
     # start date element
-    try:
-       startDay=driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[4]/td[2]/div[5]/div/div[1]/input')
-       startDay.send_keys(day) 
-    except:
-        pass
-    time.sleep(5)
+    startDay=driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[4]/td[2]/div[5]/div/div[1]/input')
+    startDay.send_keys(day)
+    time.sleep(8)
     # end date
-    try:
-        endDay=driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[4]/td[2]/div[7]/div/div[1]/input')
-        endDay.send_keys(day)
-    except:
-        pass
+    endDay=driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[4]/td[2]/div[7]/div/div[1]/input')
+    endDay.send_keys(day)
     time.sleep(8)
 
 # clear dates input
 def clearDate():
     # start date
-    try:
-       startDay=driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[4]/td[2]/div[5]/div/div[1]/input')
-       startDay.clear()
-    except:
-        pass
+    startDay=driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[4]/td[2]/div[5]/div/div[1]/input')
+    startDay.clear()
     time.sleep(5)
     # end date
-    try:
-        endDay=driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[4]/td[2]/div[7]/div/div[1]/input')
-        endDay.clear()
-    except:
-        pass
+    endDay=driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[1]/div/table/tbody/tr[4]/td[2]/div[7]/div/div[1]/input')
+    endDay.clear()
     time.sleep(5)
 
 # Download 
 def download():
+    time.sleep(3)
     # select all the samples 
-    try:
-        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[1]/div[2]/table/thead/tr/th[1]/div/span/input')\
-            .click()
-    except:
-        pass
-    time.sleep(8)
-    try:
-        # download button
-        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[2]/div[3]/button[4]').click()
-        time.sleep(5)
-        # go to opened window
-        driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
-        # select augur pipeline
-        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[1]/div/div/table[1]/tbody/tr/td[2]/div/div[1]/div[2]/div[2]/input').click()
-        time.sleep(2)
-        # click download
-        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div/div[2]/div/button').click()
-        time.sleep(30)
-        # go back to normal page
-        driver.switch_to.default_content()
-        time.sleep(2)
-    except:
-        pass
-    time.sleep(15)
-    try:
-        # deselect all the samples
-        driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[1]/div[2]/table/thead/tr/th[1]/div/span/input')\
-            .click()
-    except:
-        pass
+    driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[1]/div[2]/table/thead/tr/th[1]/div/span/input')\
+        .click()
     time.sleep(10)
+    # download button
+    driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[2]/div[3]/button[4]').click()
+    time.sleep(8)
+    # go to opened window
+    driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
+    time.sleep(4)
+    # select augur pipeline
+    driver.find_element_by_xpath('/html/body/form/div[5]/div/div[1]/div/div/table[1]/tbody/tr/td[2]/div/div[1]/div[2]/div[2]/input').click()
+    time.sleep(8)
+    # click download
+    driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div/div[2]/div/button').click()
+    time.sleep(18)
+    # go back to normal page
+    driver.switch_to.default_content()
+    time.sleep(5)
+    # deselect all the samples
+    driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[1]/div[2]/table/thead/tr/th[1]/div/span/input')\
+        .click()
+    time.sleep(8)
 
 # find the number of samples selected for download
 def samplesNum():
@@ -174,24 +145,23 @@ password=getInfo(gisaidPassword)
 sampName='hCoV-19/USA/GA-EHC'
 location='North America / USA / Georgia'
 # input the range of dates
-date_rng = pd.date_range('2022-06-13','2022-06-16',freq='D')
+date_rng = pd.date_range('2022-05-27','2022-06-23',freq='D')
 dates=pd.Series(date_rng.format()).tolist()
 
 # loop the functions functions
 def runDays():
     logIn(login, password)
     epiSearch()
-    filterName(sampName)
+    #filterName(sampName)
     filterLocation(location)
     for day in dates:
         try:
             filterDate(day)
+            time.sleep(5)
             sampNumb=samplesNum()
             if int(getSampNumb(sampNumb))>0:
                 download()
             # write downloaded date into log
-                with open("completedLog.txt", "a") as text_file:
-                    text_file.write("%s Completed" % day + "\n")
             else:
                 print('No samples to download')
                 with open("noSamplesLog.txt", "a") as text_file:
@@ -200,8 +170,12 @@ def runDays():
         except:
             with open("errorLog.txt", "a") as text_file:
                     text_file.write("%s Failed" % day + "\n")
-        finally:
-            pass
+            break
+        else:
+            # write downloaded date into log
+           with open("completedLog.txt", "a") as text_file:
+              text_file.write("%s Completed" % day + "\n")
+
 
 # run the program
 if __name__ == '__main__':
