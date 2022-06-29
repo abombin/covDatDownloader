@@ -1,9 +1,9 @@
--- test on several days
--- add logging of sampels that downloaded 
-
+-- test on the windows server
+-- make a version without location that will switch between pages
 
 
 # To consider:
+-- perhaps logg all successful steps
 -- perhaps rwrite the main call function so that try is wrapped inside another function.
 Might make the code easier to read
 -- if we download fasta and metadata separately then we can download 10k samples

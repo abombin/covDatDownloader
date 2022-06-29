@@ -1,4 +1,5 @@
 from os import path
+from turtle import down
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
@@ -99,17 +100,21 @@ def clearDate():
     endDay.clear()
     time.sleep(5)
 
-# Download 
-def download():
+# select all samples and click download
+def selectSamples():
     time.sleep(3)
-    # select all the samples 
+        # select all the samples 
     driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[1]/div[2]/table/thead/tr/th[1]/div/span/input')\
         .click()
-    time.sleep(10)
+    time.sleep(8)
     # download button
     driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[2]/div[3]/button[4]').click()
     time.sleep(8)
-    # go to opened window
+
+# Downlaod
+def download():
+    time.sleep(2)
+    # go to window
     driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
     time.sleep(4)
     # select augur pipeline
@@ -118,6 +123,10 @@ def download():
     # click download
     driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div/div[2]/div/button').click()
     time.sleep(18)
+
+# deselcet samples
+def deselectSamples():
+    time.sleep(2)
     # go back to normal page
     driver.switch_to.default_content()
     time.sleep(5)
@@ -145,38 +154,74 @@ password=getInfo(gisaidPassword)
 sampName='hCoV-19/USA/GA-EHC'
 location='North America / USA / Georgia'
 # input the range of dates
-date_rng = pd.date_range('2022-05-27','2022-06-23',freq='D')
-dates=pd.Series(date_rng.format()).tolist()
+#date_rng = pd.date_range('2022-06-24','2022-06-26',freq='D')
+#dates=pd.Series(date_rng.format()).tolist()
 
 # loop the functions functions
-def runDays():
+def runDays(firstDay, lastDay):
+    date_rng = pd.date_range(firstDay, lastDay,freq='D')
+    dates=pd.Series(date_rng.format()).tolist()
     logIn(login, password)
     epiSearch()
     #filterName(sampName)
     filterLocation(location)
+    # itterate through dates
     for day in dates:
-        try:
-            filterDate(day)
-            time.sleep(5)
-            sampNumb=samplesNum()
-            if int(getSampNumb(sampNumb))>0:
+        filterDate(day)
+        sampNumb=samplesNum()
+        if int(getSampNumb(sampNumb))>0:
+            # select samples
+            try:
+                selectSamples()
+            except:
+                time.sleep(5)
+                try:
+                   selectSamples()
+                except Exception as e:
+                    print(e) 
+                    with open("errorLog.txt", "a") as text_file:
+                        text_file.write("%s samples selection failed" % day + "\n")
+                    break
+            # download
+            try:
                 download()
-            # write downloaded date into log
+            except:
+                time.sleep(5)
+                try:
+                    download()
+                except Exception as e:
+                    print(e)
+                    with open("errorLog.txt", "a") as text_file:
+                        text_file.write('%s download failed' % day + '\n')
+                    break
+                else:
+                    # write downloaded date into log
+                    with open("completedLog.txt", "a") as text_file:
+                        text_file.write("%s Completed" % day + "\n")
             else:
-                print('No samples to download')
-                with open("noSamplesLog.txt", "a") as text_file:
-                    text_file.write("%s No_samples" % day + "\n")
-            clearDate()
-        except:
-            with open("errorLog.txt", "a") as text_file:
-                    text_file.write("%s Failed" % day + "\n")
-            break
+                # write downloaded date into log
+                with open("completedLog.txt", "a") as text_file:
+                    text_file.write("%s Completed" % day + "\n")
+            # deselect samples
+            try:
+                deselectSamples()
+            except:
+                time.sleep(5)
+                try:
+                    deselectSamples()
+                except Exception as e:
+                    print(e)
+                    with open("errorLog.txt", "a") as text_file:
+                        text_file.write('%s samples deselection failed' % day + '\n')
+                    break
         else:
-            # write downloaded date into log
-           with open("completedLog.txt", "a") as text_file:
-              text_file.write("%s Completed" % day + "\n")
-
+            print('No samples to download')
+            with open("noSamplesLog.txt", "a") as text_file:
+                text_file.write("%s No_samples" % day + "\n")
+        # clear dates
+        clearDate()
+    print('Program stopped')
 
 # run the program
 if __name__ == '__main__':
-    runDays()
+    runDays(firstDay='2022-06-24', lastDay='2022-06-26')
