@@ -163,6 +163,7 @@ password=getInfo(gisaidPassword)
 sampName='hCoV-19/USA/GA-EHC'
 location='North America / USA / Georgia'
 
+# Try wrapper functions
 def trySelectSamples(day):
     try:
         selectSamples()
@@ -174,16 +175,45 @@ def trySelectSamples(day):
             print(e) 
             with open("errorLog.txt", "a") as text_file:
                 text_file.write("%s samples selection failed" % day + "\n")
-            #break
 
-# loop the functions functions
+def tryDownload(day):
+    try:
+        download()
+    except:
+        time.sleep(5)
+        try:
+            download()
+        except Exception as e:
+            print(e)
+            with open("errorLog.txt", "a") as text_file:
+                text_file.write('%s download failed' % day + '\n')
+        else:
+            # write downloaded date into log
+            with open("completedLog.txt", "a") as text_file:
+                text_file.write("%s Completed" % day + "\n")
+    else:
+        # write downloaded date into log
+        with open("completedLog.txt", "a") as text_file:
+            text_file.write("%s Completed" % day + "\n")
+
+def tryDeselectSamples(day):
+    try:
+        deselectSamples()
+    except:
+        time.sleep(5)
+        try:
+            deselectSamples()
+        except Exception as e:
+            print(e)
+            with open("errorLog.txt", "a") as text_file:
+                text_file.write('%s samples deselection failed' % day + '\n')
+
+# loop the functions
 def runDays(firstDay, lastDay):
     date_rng = pd.date_range(firstDay, lastDay,freq='D')
     dates=pd.Series(date_rng.format()).tolist()
     logIn(login, password)
     epiSearch()
-    #filterName(sampName)
-    filterLocation(location)
     # itterate through dates
     for day in dates:
         filterDate(day)
@@ -192,37 +222,9 @@ def runDays(firstDay, lastDay):
             # select samples
             trySelectSamples(day)
             # download
-            try:
-                download()
-            except:
-                time.sleep(5)
-                try:
-                    download()
-                except Exception as e:
-                    print(e)
-                    with open("errorLog.txt", "a") as text_file:
-                        text_file.write('%s download failed' % day + '\n')
-                    break
-                else:
-                    # write downloaded date into log
-                    with open("completedLog.txt", "a") as text_file:
-                        text_file.write("%s Completed" % day + "\n")
-            else:
-                # write downloaded date into log
-                with open("completedLog.txt", "a") as text_file:
-                    text_file.write("%s Completed" % day + "\n")
+            tryDownload(day)
             # deselect samples
-            try:
-                deselectSamples()
-            except:
-                time.sleep(5)
-                try:
-                    deselectSamples()
-                except Exception as e:
-                    print(e)
-                    with open("errorLog.txt", "a") as text_file:
-                        text_file.write('%s samples deselection failed' % day + '\n')
-                    break
+            tryDeselectSamples(day)
         else:
             print('No samples to download')
             with open("noSamplesLog.txt", "a") as text_file:
