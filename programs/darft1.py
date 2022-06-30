@@ -106,8 +106,9 @@ def selectSamples():
     # select all the samples 
     elements=driver.find_elements_by_class_name('yui-dt-checkbox')
     time.sleep(2)
-    for i in elements:
-        i.click()
+    for i in range(0,50):
+        elements[i].click()
+        time.sleep(0.5)
     time.sleep(8)
     # download button
     driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[2]/div[3]/button[4]').click()
@@ -133,11 +134,13 @@ def deselectSamples():
     driver.switch_to.default_content()
     time.sleep(5)
     # deselect all the samples
-    elements=driver.find_elements_by_class_name('yui-dt-checkbox')
-    time.sleep(2)
-    for i in elements:
-        i.click()
-    time.sleep(5)
+    # select all the samples 
+    driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[1]/div[2]/table/thead/tr/th[1]/div/span/input')\
+        .click()
+    time.sleep(8)
+    driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[1]/div[2]/table/thead/tr/th[1]/div/span/input')\
+        .click()
+    time.sleep(8)
 
 # jump to next page:
 def nextPage():
@@ -220,10 +223,24 @@ def runDays(firstDay, lastDay):
         sampNumb=samplesNum()
         if int(getSampNumb(sampNumb))>0:
             # select samples
-            trySelectSamples(day)
+            time.sleep(5)
+            selectSamples()
             # download
             tryDownload(day)
             # deselect samples
+            tryDeselectSamples(day)
+            time.sleep(5)
+            time.sleep(2)
+            l=driver.find_element_by_xpath("//a[@title='Page 2']")
+            l.click()
+            time.sleep(5)
+            clearPopUp()
+            time.sleep(2)
+            driver.switch_to.default_content()
+            time.sleep(2)
+            selectSamples()
+            time.sleep(5)
+            tryDownload(day)
             tryDeselectSamples(day)
         else:
             print('No samples to download')
@@ -235,4 +252,4 @@ def runDays(firstDay, lastDay):
 
 # run the program
 if __name__ == '__main__':
-    runDays(firstDay='2022-06-24', lastDay='2022-06-26')
+    runDays(firstDay='2022-06-24', lastDay='2022-06-24')

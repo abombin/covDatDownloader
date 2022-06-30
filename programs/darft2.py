@@ -106,9 +106,8 @@ def selectSamples():
     # select all the samples 
     elements=driver.find_elements_by_class_name('yui-dt-checkbox')
     time.sleep(2)
-    for i in range(0,50):
-        elements[i].click()
-        time.sleep(0.5)
+    for i in elements:
+        i.click()
     time.sleep(8)
     # download button
     driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[2]/div[3]/button[4]').click()
@@ -142,10 +141,19 @@ def deselectSamples():
         .click()
     time.sleep(8)
 
-# jump to next page:
+# jump to next page currently is not used:
 def nextPage():
     driver.find_element_by_xpath('/html/body/form/div[5]/div/div[2]/div/div[2]/div[2]/div[2]/div[2]/div/a[1]')\
         .click()
+# got to next page
+def selectPage(page):
+    time.sleep(2)
+    findPage=driver.find_element_by_xpath("//a[@title='Page %s']" % page)
+    findPage.click()
+    time.sleep(5)
+    clearPopUp()
+    time.sleep(2)
+    #driver.switch_to.default_content()
 
 # find the number of samples selected for download
 def samplesNum():
@@ -160,6 +168,7 @@ def getSampNumb(sampNumb):
     part3=part2.replace(',', '')
     return(part3)
 
+
 # set variables
 login=getInfo(gisaidUser)
 password=getInfo(gisaidPassword)
@@ -167,7 +176,7 @@ sampName='hCoV-19/USA/GA-EHC'
 location='North America / USA / Georgia'
 
 # Try wrapper functions
-def trySelectSamples(day):
+def trySelectSamples(day, page):
     try:
         selectSamples()
     except:
@@ -177,9 +186,9 @@ def trySelectSamples(day):
         except Exception as e:
             print(e) 
             with open("errorLog.txt", "a") as text_file:
-                text_file.write("%s samples selection failed" % day + "\n")
+                text_file.write("%s samples selection failed on page %s" % (day, page) + "\n")
 
-def tryDownload(day):
+def tryDownload(day, page):
     try:
         download()
     except:
@@ -189,17 +198,17 @@ def tryDownload(day):
         except Exception as e:
             print(e)
             with open("errorLog.txt", "a") as text_file:
-                text_file.write('%s download failed' % day + '\n')
+                text_file.write('%s download failed on page %s' % (day, page) + '\n')
         else:
             # write downloaded date into log
             with open("completedLog.txt", "a") as text_file:
-                text_file.write("%s Completed" % day + "\n")
+                text_file.write("%s Completed page %s" % (day, page) + "\n")
     else:
         # write downloaded date into log
         with open("completedLog.txt", "a") as text_file:
-            text_file.write("%s Completed" % day + "\n")
+            text_file.write("%s Completed page %s" % (day, page) + "\n")
 
-def tryDeselectSamples(day):
+def tryDeselectSamples(day, page):
     try:
         deselectSamples()
     except:
@@ -209,7 +218,7 @@ def tryDeselectSamples(day):
         except Exception as e:
             print(e)
             with open("errorLog.txt", "a") as text_file:
-                text_file.write('%s samples deselection failed' % day + '\n')
+                text_file.write('%s samples deselection failed on page %s' % (day, page) + '\n')
 
 # loop the functions
 def runDays(firstDay, lastDay):
@@ -222,26 +231,16 @@ def runDays(firstDay, lastDay):
         filterDate(day)
         sampNumb=samplesNum()
         if int(getSampNumb(sampNumb))>0:
-            # select samples
-            time.sleep(5)
-            selectSamples()
-            # download
-            tryDownload(day)
-            # deselect samples
-            tryDeselectSamples(day)
-            time.sleep(5)
-            time.sleep(2)
-            l=driver.find_element_by_xpath("//a[@title='Page 2']")
-            l.click()
-            time.sleep(5)
-            clearPopUp()
-            time.sleep(2)
-            driver.switch_to.default_content()
-            time.sleep(2)
-            selectSamples()
-            time.sleep(5)
-            tryDownload(day)
-            tryDeselectSamples(day)
+            for page in range(2,4):
+                # select samples
+                time.sleep(5)
+                selectSamples()
+                # download
+                tryDownload(day, page)
+                # deselect samples
+                tryDeselectSamples(day, page)
+                # go to next page
+                selectPage(page)
         else:
             print('No samples to download')
             with open("noSamplesLog.txt", "a") as text_file:
