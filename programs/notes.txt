@@ -1,5 +1,4 @@
 -- test on the windows server
--- make a version without location that will switch between pages
 
 
 # To consider:
